@@ -19,7 +19,6 @@ pub fn main() !void {
         defer line_vals.deinit(allocator);
 
         const left = line_vals.items[0];
-        //const right = line_vals.items[1];
 
         for (left) |ele| {
             std.debug.print("element: {c} ", .{ele});
@@ -28,15 +27,20 @@ pub fn main() !void {
     }
 }
 
-fn split_string(allocator: std.mem.Allocator, delimiter: []const u8, input: []u8) !std.ArrayList([]const u8) {
+fn split_string(allocator: std.mem.Allocator, delimiter: []const u8, 
+    input: []u8) !std.ArrayList([]const u8) {
+
+    // init array with size 10
     var list: std.ArrayList([]const u8) = try std.ArrayList([]const u8)
         .initCapacity(allocator, 8);
 
+    // split the string into two with "\s\s\s" delimiter and add to list
     var val_iter = std.mem.splitSequence(u8, input, delimiter);
     while(val_iter.next()) |slice| {
         try list.append(allocator, slice);
     }
 
-    return try list.clone(allocator);
+    return list;
+
 }
 
